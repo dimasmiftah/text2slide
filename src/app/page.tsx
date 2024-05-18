@@ -12,10 +12,10 @@ I ship websites 🛩️
 https://instagram.com/dimas.mfth`;
 
 export default function Home() {
-  const [text, setText] = useState(localStorage?.getItem(TEXT_STORAGE_KEY) || DEFAULT_TEXT);
+  const [text, setText] = useState(DEFAULT_TEXT);
   const [slides, setSlides] = useState<string[]>([]);
   const [activeSlide, setActiveSlide] = useState(0);
-  const [theme, setTheme] = useState<'light' | 'dark'>(localStorage?.getItem(THEME_STORAGE_KEY) as 'light' | 'dark');
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
 
   const colorClass = theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gray-200 text-black';
 
@@ -58,6 +58,23 @@ export default function Home() {
   };
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedText = localStorage.getItem(TEXT_STORAGE_KEY);
+      if (storedText) setText(storedText);
+
+      const storedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+      if (storedTheme) {
+        setTheme(storedTheme === 'dark' ? 'dark' : 'light');
+        document.documentElement.classList.toggle('dark', storedTheme === 'dark');
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+  }, [theme]);
+
+  useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'ArrowLeft') {
         handlePrev();
@@ -77,10 +94,6 @@ export default function Home() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [text, slides, theme]);
-
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-  }, [theme]);
 
   const renderThemeToggle = () => (
     <button className={`w-10 h-10 ${colorClass}`} onClick={handleToggleTheme}>
