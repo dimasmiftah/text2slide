@@ -13,17 +13,7 @@ https://instagram.com/dimas.mfth`;
 
 export default function Home() {
   const [text, setText] = useState('');
-  const [slides, setSlides] = useState<string[]>(() => {
-    const url = new URL(window.location.href);
-    const slides = url.searchParams.get('slides');
-
-    if (slides) {
-      setText(decodeURIComponent(slides));
-      return slides.split('\n\n');
-    }
-
-    return [];
-  });
+  const [slides, setSlides] = useState<string[]>([]);
   const [activeSlide, setActiveSlide] = useState(0);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
@@ -68,11 +58,21 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const storedText = localStorage.getItem(TEXT_STORAGE_KEY);
     const storedTheme = localStorage.getItem(THEME_STORAGE_KEY);
-
-    setText(storedText || DEFAULT_TEXT);
     setTheme(storedTheme === 'dark' ? 'dark' : 'light');
+
+    const url = new URL(window.location.href);
+    const slidesFromURL = url.searchParams.get('slides');
+
+    if (slidesFromURL) {
+      setText(decodeURIComponent(slidesFromURL));
+      setSlides(slidesFromURL.split('\n\n'));
+
+      return;
+    }
+
+    const storedText = localStorage.getItem(TEXT_STORAGE_KEY);
+    setText(storedText || DEFAULT_TEXT);
   }, []);
 
   useEffect(() => {
