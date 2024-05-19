@@ -12,10 +12,10 @@ I ship websites 🛩️
 https://instagram.com/dimas.mfth`;
 
 export default function Home() {
-  const [text, setText] = useState(DEFAULT_TEXT);
+  const [text, setText] = useState('');
   const [slides, setSlides] = useState<string[]>([]);
   const [activeSlide, setActiveSlide] = useState(0);
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   const colorClass = theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gray-200 text-black';
 
@@ -52,27 +52,19 @@ export default function Home() {
     setTheme((prevTheme) => {
       const newTheme = prevTheme === 'dark' ? 'light' : 'dark';
       localStorage.setItem('theme', newTheme);
+      document.documentElement.classList.toggle('dark', newTheme === 'dark');
 
       return newTheme;
     });
   };
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const storedText = localStorage.getItem(TEXT_STORAGE_KEY);
-      if (storedText) setText(storedText);
+    const storedText = localStorage.getItem(TEXT_STORAGE_KEY);
+    const storedTheme = localStorage.getItem(THEME_STORAGE_KEY);
 
-      const storedTheme = localStorage.getItem(THEME_STORAGE_KEY);
-      if (storedTheme) {
-        setTheme(storedTheme === 'dark' ? 'dark' : 'light');
-        document.documentElement.classList.toggle('dark', storedTheme === 'dark');
-      }
-    }
+    setText(storedText || DEFAULT_TEXT);
+    setTheme(storedTheme === 'dark' ? 'dark' : 'light');
   }, []);
-
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-  }, [theme]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
