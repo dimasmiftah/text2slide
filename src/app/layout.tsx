@@ -6,7 +6,30 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Text 2 Slide',
-  description: 'Convert text to slides',
+  description: 'Convert your text into slides.',
+  applicationName: 'Text 2 Slide',
+  authors: [
+    {
+      url: 'https://instagram.com/dimas.mfth',
+      name: 'Dimas Miftah',
+    },
+  ],
+  keywords: ['text to slide', 'presentation', 'slide generator', 'online tool'],
+  twitter: {
+    card: 'summary_large_image',
+    site: '@dimasmfth',
+    creator: '@dimasmfth',
+  },
+  openGraph: {
+    title: 'Text 2 Slide',
+    description: 'Convert your text into slides.',
+    images: {
+      url: 'https://www.text2slide.com/og-image.png',
+      width: 1200,
+      height: 630,
+      alt: 'Preview of Text 2 Slide',
+    },
+  },
 };
 
 export default function RootLayout({
