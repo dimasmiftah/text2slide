@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     title: 'Text 2 Slide',
     description: 'Convert your text into slides.',
     images: {
-      url: 'https://www.text2slide.com/og-image.png',
+      url: 'https://text2slide.dimasmiftah.com/og-image.png',
       width: 1200,
       height: 630,
       alt: 'Preview of Text 2 Slide',
