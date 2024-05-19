@@ -8,7 +8,6 @@
   --background-end-rgb: 255, 255, 255;
   --background-color: rgb(240, 240, 240);
   --text-color: #575657;
-  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .dark:root {
@@ -29,6 +28,5 @@ body {
   .color-scheme {
     background: var(--background-color);
     color: var(--text-color);
-    box-shadow: var(--box-shadow);
   }
 }
