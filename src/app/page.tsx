@@ -13,7 +13,17 @@ https://instagram.com/dimas.mfth`;
 
 export default function Home() {
   const [text, setText] = useState('');
-  const [slides, setSlides] = useState<string[]>([]);
+  const [slides, setSlides] = useState<string[]>(() => {
+    const url = new URL(window.location.href);
+    const slides = url.searchParams.get('slides');
+
+    if (slides) {
+      setText(decodeURIComponent(slides));
+      return slides.split('\n\n');
+    }
+
+    return [];
+  });
   const [activeSlide, setActiveSlide] = useState(0);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
@@ -25,17 +35,18 @@ export default function Home() {
   const handleSubmit = () => {
     if (!text) return alert('Please enter some text.');
 
-    setSlides(
-      text
-        .split('\n\n')
-        .map((slide) => slide.trim())
-        .filter(Boolean)
-    );
+    const formattedSlides = text
+      .split('\n\n')
+      .map((slide) => slide.trim().split('\n').join('<br/>')) // Replace newlines with <br/>
+      .filter(Boolean);
+
+    setSlides(formattedSlides);
   };
 
   const handleReset = () => {
     setSlides([]);
     setActiveSlide(0);
+    window.history.pushState({}, document.title, window.location.pathname);
   };
 
   const handleNext = () => {
@@ -92,16 +103,8 @@ export default function Home() {
   );
 
   return slides.length > 0 ? (
-    <main className='flex flex-col items-center justify-center w-screen h-screen p-48'>
-      <h1 className='text-4xl font-semibold leading-snug'>
-        {slides[activeSlide].includes('http') ? (
-          <a href={slides[activeSlide]} target='_blank' rel='noopener noreferrer'>
-            {slides[activeSlide]}
-          </a>
-        ) : (
-          slides[activeSlide]
-        )}
-      </h1>
+    <main className='flex flex-col items-center justify-center w-screen h-screen p-80'>
+      <h1 className='text-5xl font-semibold leading-snug' dangerouslySetInnerHTML={{ __html: slides[activeSlide] }} />
       <nav className='flex gap-2 fixed top-4 right-4'>
         <button className={`w-16 h-10 color-scheme`} onClick={handleNext}>
           {activeSlide + 1} / {slides.length}
@@ -110,12 +113,23 @@ export default function Home() {
           className={`w-10 h-10 color-scheme`}
           onClick={() =>
             alert(`
-              Use the left (<) and right (>) arrow keys to navigate through the slides.
-              Press the escape (esc) key to exit the presentation.
-            `)
+          Use the left (<) and right (>) arrow keys to navigate through the slides.
+          Press the escape (esc) key to exit the presentation.
+        `)
           }
         >
-          ?
+          ❓
+        </button>
+        <button
+          className={`w-10 h-10 color-scheme`}
+          onClick={() => {
+            navigator.clipboard.writeText(
+              `${window.location.origin}?slides=${encodeURIComponent(slides.join('\n\n'))}`
+            );
+            alert('Copied the URL to your clipboard!');
+          }}
+        >
+          🔗
         </button>
         {renderThemeToggle()}
       </nav>
@@ -124,7 +138,7 @@ export default function Home() {
     <main className='flex min-h-screen flex-col items-center justify-center gap-4 p-24'>
       <h1 className='text-4xl font-bold'>Text 2 Slide</h1>
       <p className='text-lg'>
-        Convert your text into slides. Separate your slides with <code>two new lines</code>.
+        Convert your text into slides. Separate your slides with an <code>empty line</code>.
       </p>
       <form className='flex flex-col gap-4'>
         <textarea
