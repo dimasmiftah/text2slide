@@ -23,6 +23,8 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Text 2 Slide',
     description: 'Convert your text into slides.',
+    type: 'website',
+    locale: 'en_US',
     images: {
       url: 'https://text2slide.dimasmiftah.com/og-image.png',
       width: 1200,

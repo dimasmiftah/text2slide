@@ -119,7 +119,7 @@ export default function Home() {
 
     if (slidesFromURL) {
       setText(decodeURIComponent(slidesFromURL));
-      setSlides(slidesFromURL.split('\n\n'));
+      setSlides(decodeURIComponent(slidesFromURL).split('\n\n'));
 
       return;
     }
