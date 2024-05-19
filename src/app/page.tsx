@@ -146,7 +146,7 @@ export default function Home() {
   return slides.length > 0 ? (
     <main className='flex flex-col items-center justify-center w-screen h-svh p-4 md:p-8 lg:p-16 box-border'>
       <h1
-        className='text-3xl md:text-5xl lg:text-6xl font-semibold leading-snug break-all'
+        className='text-2xl md:text-5xl lg:text-6xl font-semibold leading-snug break-all'
         dangerouslySetInnerHTML={{ __html: slides[activeSlide] }}
       />
       <nav className='flex justify-center gap-1 md:gap-2 fixed bottom-4 right-4 left-1/2 transform -translate-x-1/2 w-full'>
@@ -181,7 +181,7 @@ export default function Home() {
     </main>
   ) : (
     <main className='flex w-screen h-svh flex-col items-center justify-center gap-4 px-4 md:px-8 lg:px-16 box-border'>
-      <h1 className='text-3xl md:text-5xl lg:text-6xl font-bold'>Text 2 Slide</h1>
+      <h1 className='text-2xl md:text-5xl lg:text-6xl font-bold'>Text 2 Slide</h1>
       <p className='text-md md:text-lg lg:text-xl'>
         Convert your text into slides. Separate your slides with an empty line.
       </p>
