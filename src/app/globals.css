@@ -6,12 +6,16 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 255, 255, 255;
   --background-end-rgb: 255, 255, 255;
+  --background-color: #d7d6d6;
+  --text-color: #575657;
 }
 
 .dark:root {
   --foreground-rgb: 255, 255, 255;
   --background-start-rgb: 0, 0, 0;
   --background-end-rgb: 0, 0, 0;
+  --background-color: #2d2e30;
+  --text-color: #cbcbcb;
 }
 
 body {
@@ -20,7 +24,8 @@ body {
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .color-scheme {
+    background: var(--background-color);
+    color: var(--text-color);
   }
 }

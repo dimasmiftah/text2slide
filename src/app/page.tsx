@@ -17,8 +17,6 @@ export default function Home() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
-  const colorClass = theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gray-200 text-black';
-
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(event.target.value);
     localStorage.setItem(TEXT_STORAGE_KEY, event.target.value);
@@ -88,7 +86,7 @@ export default function Home() {
   }, [text, slides, theme]);
 
   const renderThemeToggle = () => (
-    <button className={`w-10 h-10 ${colorClass}`} onClick={handleToggleTheme}>
+    <button className={`w-10 h-10 color-scheme`} onClick={handleToggleTheme}>
       {theme === 'dark' ? '🌚' : '🌞'}
     </button>
   );
@@ -105,11 +103,11 @@ export default function Home() {
         )}
       </h1>
       <nav className='flex gap-2 fixed top-4 right-4'>
-        <button className={`w-16 h-10 ${colorClass}`} onClick={handleNext}>
+        <button className={`w-16 h-10 color-scheme`} onClick={handleNext}>
           {activeSlide + 1} / {slides.length}
         </button>
         <button
-          className={`w-10 h-10 ${colorClass}`}
+          className={`w-10 h-10 color-scheme`}
           onClick={() =>
             alert(`
               Use the left (<) and right (>) arrow keys to navigate through the slides.
@@ -130,7 +128,7 @@ export default function Home() {
       </p>
       <form className='flex flex-col gap-4'>
         <textarea
-          className={`w-full p-4 ${colorClass}`}
+          className={`w-full p-4 color-scheme`}
           placeholder='Type your text...'
           onChange={handleChange}
           value={text}
@@ -139,7 +137,7 @@ export default function Home() {
           cols={80}
           required
         />
-        <button type='button' className={`p-4 ${colorClass}`} onClick={handleSubmit}>
+        <button type='button' className={`p-4 color-scheme`} onClick={handleSubmit}>
           Submit
         </button>
       </form>
