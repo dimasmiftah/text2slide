@@ -103,12 +103,13 @@ export default function Home() {
   );
 
   return slides.length > 0 ? (
-    <main className='flex flex-col items-center justify-center w-screen h-screen p-80'>
-      <h1 className='text-5xl font-semibold leading-snug' dangerouslySetInnerHTML={{ __html: slides[activeSlide] }} />
-      <nav className='flex gap-2 fixed top-4 right-4'>
-        <button className={`w-16 h-10 color-scheme`} onClick={handleNext}>
-          {activeSlide + 1} / {slides.length}
-        </button>
+    <main className='flex flex-col items-center justify-center w-screen h-screen p-4 md:p-8 lg:p-16'>
+      <h1
+        className='text-2xl md:text-5xl lg:text-6xl font-semibold leading-snug break-all'
+        dangerouslySetInnerHTML={{ __html: slides[activeSlide] }}
+      />
+      <nav className='flex gap-2 fixed bottom-4 right-4'>
+        {renderThemeToggle()}
         <button
           className={`w-10 h-10 color-scheme`}
           onClick={() =>
@@ -131,18 +132,29 @@ export default function Home() {
         >
           🔗
         </button>
-        {renderThemeToggle()}
+        <button className={`w-16 h-10 color-scheme`} onClick={handleNext}>
+          {activeSlide + 1} / {slides.length}
+        </button>
+        <button className={`w-10 h-10 color-scheme`} onClick={handleReset}>
+          {'x'}
+        </button>
+        <button className={`w-10 h-10 color-scheme`} onClick={handlePrev}>
+          {'<'}
+        </button>
+        <button className={`w-10 h-10 color-scheme`} onClick={handleNext}>
+          {'>'}
+        </button>
       </nav>
     </main>
   ) : (
-    <main className='flex min-h-screen flex-col items-center justify-center gap-4 p-24'>
-      <h1 className='text-4xl font-bold'>Text 2 Slide</h1>
-      <p className='text-lg'>
+    <main className='flex min-h-screen flex-col items-center justify-center gap-4 p-4 md:p-8 lg:p-16'>
+      <h1 className='text-lg md:text-4xl lg:text-5xl font-bold'>Text 2 Slide</h1>
+      <p className='text-sm md:text-lg lg:text-xl'>
         Convert your text into slides. Separate your slides with an <code>empty line</code>.
       </p>
       <form className='flex flex-col gap-4'>
         <textarea
-          className={`w-full p-8 color-scheme`}
+          className={`w-full p-2 md:p-4 lg:p-8 color-scheme`}
           placeholder='Type your text...'
           onChange={handleChange}
           value={text}
@@ -151,11 +163,11 @@ export default function Home() {
           cols={80}
           required
         />
-        <button type='button' className={`p-4 color-scheme`} onClick={handleSubmit}>
+        <button type='button' className={`p-2 md:p-4 lg:p-8 color-scheme`} onClick={handleSubmit}>
           Submit
         </button>
       </form>
-      <nav className='flex gap-2 fixed top-4 right-4'>{renderThemeToggle()}</nav>
+      <nav className='flex gap-2 fixed bottom-4 right-4'>{renderThemeToggle()}</nav>
     </main>
   );
 }
