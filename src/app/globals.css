@@ -6,16 +6,18 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 255, 255, 255;
   --background-end-rgb: 255, 255, 255;
-  --background-color: #d7d6d6;
+  --background-color: rgb(240, 240, 240);
   --text-color: #575657;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .dark:root {
   --foreground-rgb: 255, 255, 255;
   --background-start-rgb: 0, 0, 0;
   --background-end-rgb: 0, 0, 0;
-  --background-color: #2d2e30;
+  --background-color: rgba(45, 46, 48, 0.7);
   --text-color: #cbcbcb;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
 }
 
 body {
@@ -27,5 +29,6 @@ body {
   .color-scheme {
     background: var(--background-color);
     color: var(--text-color);
+    box-shadow: var(--box-shadow);
   }
 }

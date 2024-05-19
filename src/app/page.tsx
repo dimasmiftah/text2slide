@@ -128,7 +128,7 @@ export default function Home() {
       </p>
       <form className='flex flex-col gap-4'>
         <textarea
-          className={`w-full p-4 color-scheme`}
+          className={`w-full p-8 color-scheme`}
           placeholder='Type your text...'
           onChange={handleChange}
           value={text}
