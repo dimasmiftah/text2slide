@@ -32,7 +32,19 @@ export default function Home() {
 
     const formattedSlides = text
       .split('\n\n')
-      .map((slide) => slide.trim().split('\n').join('<br/>')) // Replace newlines with <br/>
+      .map((slide) => {
+        // Replace newlines with <br/>
+        const formattedSlide = slide.trim().split('\n').join('<br/>');
+
+        // Wrap URLs with <a> tags and add break-all class
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+        const slideWithLinks = formattedSlide.replace(
+          urlRegex,
+          '<a href="$1" target="_blank" rel="noopener noreferrer" class="break-all">$1</a>'
+        );
+
+        return slideWithLinks;
+      })
       .filter(Boolean);
 
     setSlides(formattedSlides);
@@ -138,24 +150,24 @@ export default function Home() {
   }, [text, slides, theme]);
 
   const renderThemeToggle = () => (
-    <button className={`w-10 h-10 color-scheme`} onClick={handleToggleTheme}>
-      {theme === 'dark' ? '🌚' : '🌞'}
+    <button className={`w-10 h-10 md:w-16 md:h-16 color-scheme`} onClick={handleToggleTheme}>
+      {theme === 'dark' ? '🌞' : '🌚'}
     </button>
   );
 
   return slides.length > 0 ? (
-    <main className='flex flex-col items-center justify-center w-screen h-svh p-4 md:p-8 lg:p-16 box-border'>
+    <main className='flex flex-col items-center justify-center w-screen h-svh p-4 md:p-8 lg:p-60 box-border'>
       <h1
-        className='text-2xl md:text-5xl lg:text-6xl font-semibold leading-snug break-all'
+        className='text-2xl md:text-5xl lg:text-6xl font-semibold leading-snug'
         dangerouslySetInnerHTML={{ __html: slides[activeSlide] }}
       />
       <nav className='flex justify-center gap-1 md:gap-2 fixed bottom-4 right-4 left-1/2 transform -translate-x-1/2 w-full'>
         {renderThemeToggle()}
-        <button className={`w-10 h-10 color-scheme`} onClick={handleShare}>
+        <button className={`w-10 h-10 md:w-16 md:h-16 color-scheme`} onClick={handleShare}>
           🔗
         </button>
         <button
-          className={`w-10 h-10 color-scheme`}
+          className={`w-10 h-10 md:w-16 md:h-16 color-scheme`}
           onClick={() =>
             alert(`
           Use the left (<) and right (>) arrow keys to navigate through the slides.
@@ -165,16 +177,16 @@ export default function Home() {
         >
           ?
         </button>
-        <button className={`w-16 h-10 color-scheme`} onClick={handleNext}>
+        <button className={`w-16 h-10 md:h-16 color-scheme`} onClick={handleNext}>
           {activeSlide + 1} / {slides.length}
         </button>
-        <button className={`w-10 h-10 color-scheme`} onClick={handleReset}>
+        <button className={`w-10 h-10 md:w-16 md:h-16 color-scheme`} onClick={handleReset}>
           {'x'}
         </button>
-        <button className={`w-10 h-10 color-scheme`} onClick={handlePrev}>
+        <button className={`w-10 h-10 md:w-16 md:h-16 color-scheme`} onClick={handlePrev}>
           {'<'}
         </button>
-        <button className={`w-10 h-10 color-scheme`} onClick={handleNext}>
+        <button className={`w-10 h-10 md:w-16 md:h-16 color-scheme`} onClick={handleNext}>
           {'>'}
         </button>
       </nav>
@@ -196,10 +208,10 @@ export default function Home() {
           cols={80}
           required
         />
-        <button type='button' className={`p-2 md:p-4 lg:p-8 color-scheme`} onClick={handleResetText}>
+        <button type='button' className={`p-2 md:p-4 color-scheme`} onClick={handleResetText}>
           Reset
         </button>
-        <button type='button' className={`p-2 md:p-4 lg:p-8 color-scheme`} onClick={handleSubmit}>
+        <button type='button' className={`p-2 md:p-4 color-scheme`} onClick={handleSubmit}>
           Submit
         </button>
       </form>
