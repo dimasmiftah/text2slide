@@ -22,6 +22,11 @@ export default function Home() {
     localStorage.setItem(TEXT_STORAGE_KEY, event.target.value);
   };
 
+  const handleResetText = () => {
+    setText('');
+    localStorage.setItem(TEXT_STORAGE_KEY, '');
+  };
+
   const handleSubmit = () => {
     if (!text) return alert('Please enter some text.');
 
@@ -45,6 +50,42 @@ export default function Home() {
 
   const handlePrev = () => {
     setActiveSlide((prev) => (prev > 0 ? prev - 1 : prev));
+  };
+
+  const handleShare = () => {
+    const slidesEncoded = encodeURIComponent(slides.join('\n\n'));
+    const url = `${window.location.origin}?slides=${slidesEncoded}`;
+
+    if (navigator.clipboard) {
+      navigator.clipboard
+        .writeText(url)
+        .then(() => alert('Copied the URL to your clipboard!'))
+        .catch((error) => {
+          console.error('Unable to copy URL to clipboard:', error);
+          fallbackCopyTextToClipboard(url);
+        });
+    } else {
+      fallbackCopyTextToClipboard(url);
+    }
+  };
+
+  const fallbackCopyTextToClipboard = (text: string) => {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+      document.execCommand('copy');
+      alert('Copied the URL to your clipboard!');
+    } catch (err) {
+      console.error('Unable to copy URL to clipboard:', err);
+      alert('Failed to copy the URL to your clipboard. Please copy it manually.');
+    }
+
+    document.body.removeChild(textArea);
   };
 
   const handleToggleTheme = () => {
@@ -103,13 +144,16 @@ export default function Home() {
   );
 
   return slides.length > 0 ? (
-    <main className='flex flex-col items-center justify-center w-screen h-screen p-4 md:p-8 lg:p-16'>
+    <main className='flex flex-col items-center justify-center w-screen h-svh p-4 md:p-8 lg:p-16 box-border'>
       <h1
-        className='text-2xl md:text-5xl lg:text-6xl font-semibold leading-snug break-all'
+        className='text-3xl md:text-5xl lg:text-6xl font-semibold leading-snug break-all'
         dangerouslySetInnerHTML={{ __html: slides[activeSlide] }}
       />
-      <nav className='flex gap-2 fixed bottom-4 right-4'>
+      <nav className='flex justify-center gap-1 md:gap-2 fixed bottom-4 right-4 left-1/2 transform -translate-x-1/2 w-full'>
         {renderThemeToggle()}
+        <button className={`w-10 h-10 color-scheme`} onClick={handleShare}>
+          🔗
+        </button>
         <button
           className={`w-10 h-10 color-scheme`}
           onClick={() =>
@@ -119,18 +163,7 @@ export default function Home() {
         `)
           }
         >
-          ❓
-        </button>
-        <button
-          className={`w-10 h-10 color-scheme`}
-          onClick={() => {
-            navigator.clipboard.writeText(
-              `${window.location.origin}?slides=${encodeURIComponent(slides.join('\n\n'))}`
-            );
-            alert('Copied the URL to your clipboard!');
-          }}
-        >
-          🔗
+          ?
         </button>
         <button className={`w-16 h-10 color-scheme`} onClick={handleNext}>
           {activeSlide + 1} / {slides.length}
@@ -147,10 +180,10 @@ export default function Home() {
       </nav>
     </main>
   ) : (
-    <main className='flex min-h-screen flex-col items-center justify-center gap-4 p-4 md:p-8 lg:p-16'>
-      <h1 className='text-lg md:text-4xl lg:text-5xl font-bold'>Text 2 Slide</h1>
-      <p className='text-sm md:text-lg lg:text-xl'>
-        Convert your text into slides. Separate your slides with an <code>empty line</code>.
+    <main className='flex w-screen h-svh flex-col items-center justify-center gap-4 px-4 md:px-8 lg:px-16 box-border'>
+      <h1 className='text-3xl md:text-5xl lg:text-6xl font-bold'>Text 2 Slide</h1>
+      <p className='text-md md:text-lg lg:text-xl'>
+        Convert your text into slides. Separate your slides with an empty line.
       </p>
       <form className='flex flex-col gap-4'>
         <textarea
@@ -159,10 +192,13 @@ export default function Home() {
           onChange={handleChange}
           value={text}
           autoFocus
-          rows={20}
+          rows={10}
           cols={80}
           required
         />
+        <button type='button' className={`p-2 md:p-4 lg:p-8 color-scheme`} onClick={handleResetText}>
+          Reset
+        </button>
         <button type='button' className={`p-2 md:p-4 lg:p-8 color-scheme`} onClick={handleSubmit}>
           Submit
         </button>
